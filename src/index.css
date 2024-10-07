@@ -1,3 +1,87 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-ExtraLight.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-ExtraLightIt.otf") format("opentype");
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-LightIt.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-It.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-Semibold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-SemiboldIt.otf") format("opentype");
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SourceSansPro";
+  src: url("./assets/fonts/SourceSansPro-BlackIt.otf") format("opentype");
+  font-weight: 900;
+  font-style: italic;
+}

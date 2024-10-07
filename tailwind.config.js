@@ -6,10 +6,13 @@ export default {
   ],
   theme: {
     extend: {
-      colors:{
+      colors: {
         'bg-color': '#F5F5F5'
       }
     },
+    fontFamily: {
+      sans: ["SourceSansPro", "sans-serif"]
+    }
   },
   plugins: [],
 }
