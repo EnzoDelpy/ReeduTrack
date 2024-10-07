@@ -5,6 +5,7 @@ interface Props {
   children: ReactNode;
   currentPage: string;
   setActiveTab: (tabName: string) => void;
+  setIsCollapsed: (tabName: boolean) => void;
   page: string;
   route: string;
 }
@@ -13,11 +14,17 @@ export default function Navitem({
   children,
   currentPage,
   setActiveTab,
+  setIsCollapsed,
   page,
   route,
 }: Props) {
   return (
-    <li onClick={() => setActiveTab(page)}>
+    <li
+      onClick={() => {
+        setActiveTab(page);
+        setIsCollapsed(false);
+      }}
+    >
       <Link
         to={route}
         className={

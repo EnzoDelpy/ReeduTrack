@@ -10,7 +10,7 @@ function App() {
         <header>
           <Navbar></Navbar>
         </header>
-        <main className="ml-[23.25rem] px-8 py-20">
+        <main className="lg:ml-[23.25rem] px-3 sm:px-8 py-20">
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
