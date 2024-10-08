@@ -11,7 +11,8 @@ export default {
         'green-custom': '#58A980',
         'yellow-custom': '#BFBC6B',
         'blue-custom': '#588AA9',
-        'gray-custom': '#D2D2D2'
+        'gray-custom': '#D2D2D2',
+        'red-custom': '#A95858',
       }
     },
     fontFamily: {

@@ -70,9 +70,9 @@ export default function ExerciceItem({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="w-full overflow-hidden flex gap-6 justify-evenly px-4"
+            className="w-full overflow-hidden flex gap-6 justify-evenly px-4 max-md:flex-col"
           >
-            <span className="max-w-96 flex-1 min-w-0 text-justify">
+            <span className="max-w-96 flex-1 min-w-0 text-justify max-md:self-center">
               {description}
             </span>
             <div className="flex-grow flex-1 min-w-0 aspect-[853/480] relative h-min">
