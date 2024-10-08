@@ -10,6 +10,7 @@ export default {
         'bg-color': '#F5F5F5',
         'green-custom': '#58A980',
         'yellow-custom': '#BFBC6B',
+        'blue-custom': '#588AA9',
         'gray-custom': '#D2D2D2'
       }
     },
