@@ -7,7 +7,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        'bg-color': '#F5F5F5'
+        'bg-color': '#F5F5F5',
+        'green-custom': '#58A980',
+        'yellow-custom': '#BFBC6B',
+        'gray-custom': '#D2D2D2'
       }
     },
     fontFamily: {
