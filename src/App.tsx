@@ -2,6 +2,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar.tsx";
 import Home from "./components/Home/Home.tsx";
 import Profile from "./components/Profile/Profile.tsx";
+import Program from "./components/Program/Program.tsx";
+
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/program" element={<Program />}></Route>
+
           </Routes>
         </main>
       </BrowserRouter>
