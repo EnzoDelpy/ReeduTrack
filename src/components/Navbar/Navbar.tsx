@@ -16,7 +16,7 @@ export default function Navbar() {
       <MobileNav setIsCollapsed={setIsCollapsed}></MobileNav>
       <div
         data-collapsed={isCollapsed}
-        className="h-[calc(100svh_-_1.5rem)] w-64 sm:w-[22.5rem] bg-white m-3 rounded-lg shadow-[rgba(0,_0,_0,_0.1)_-4px_9px_25px_-6px] p-3 flex flex-col gap-6 fixed max-lg:top-0 max-lg:right-0 max-lg:data-[collapsed=false]:w-0 max-lg:data-[collapsed=false]:px-0 max-lg:data-[collapsed=false]:mr-0 transition-all duration-300"
+        className="h-[calc(100svh_-_1.5rem)] w-64 sm:w-[22.5rem] bg-white m-3 rounded-lg shadow-[rgba(0,_0,_0,_0.1)_-4px_9px_25px_-6px] p-3 flex flex-col gap-6 fixed max-lg:top-0 max-lg:right-0 max-lg:data-[collapsed=false]:w-0 max-lg:data-[collapsed=false]:px-0 max-lg:data-[collapsed=false]:mr-0 transition-all duration-300 z-10"
       >
         <div className="flex items-center gap-3 max-lg:hidden">
           <img src={logo} alt="ReeduTrack logo" className="w-9 h-9" />
