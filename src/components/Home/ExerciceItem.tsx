@@ -4,8 +4,23 @@ import Badge from "../shared/Badge";
 import { motion, AnimatePresence } from "framer-motion";
 import Spinner from "../shared/Spinner";
 
-export default function ExerciceItem() {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+interface Props {
+  title: string;
+  description: string;
+  video_id: string;
+  activeItem: number | null;
+  id: number;
+  setActiveItem: (itemId: number | null) => void;
+}
+
+export default function ExerciceItem({
+  title,
+  description,
+  video_id,
+  activeItem,
+  id,
+  setActiveItem,
+}: Props) {
   const [isLoading, setIsLoading] = useState(true);
 
   const toggleCollapse = (event: React.MouseEvent): void => {
@@ -16,14 +31,18 @@ export default function ExerciceItem() {
     ) {
       return;
     }
-    setIsCollapsed(!isCollapsed);
+    if (activeItem == id) {
+      setActiveItem(null);
+    } else {
+      setActiveItem(id);
+    }
     setIsLoading(true);
   };
 
   return (
     <div className="flex flex-col gap-2">
       <div
-        data-collapsed={isCollapsed}
+        data-collapsed={activeItem == id}
         className={
           "w-full rounded-lg h-12 px-4 flex items-center bg-white gap-3 cursor-pointer"
         }
@@ -33,18 +52,18 @@ export default function ExerciceItem() {
           type="checkbox"
           className="h-6 w-6 rounded-md appearance-none checked:bg-green-custom border-gray-custom border-2 cursor-pointer transition-all"
         />
-        <span className="mr-auto">Fentes marchées</span>
+        <span className="mr-auto">{title}</span>
         <Badge>3 séries</Badge>
         <Badge>20 répétitions</Badge>
         <div
-          data-collapsed={isCollapsed}
+          data-collapsed={activeItem == id}
           className="ml-3 data-[collapsed=true]:rotate-180 transition-all duration-300"
         >
           <ChevronUp></ChevronUp>
         </div>
       </div>
       <AnimatePresence>
-        {isCollapsed && (
+        {activeItem == id && (
           <motion.div
             layout
             initial={{ opacity: 0, height: 0 }}
@@ -54,38 +73,29 @@ export default function ExerciceItem() {
             className="w-full overflow-hidden flex gap-6 justify-evenly px-4"
           >
             <span className="max-w-96 flex-1 min-w-0 text-justify">
-              En position debout, faites un grand pas en avant avec une jambe,
-              puis descendez en pliant les deux genoux jusqu'à ce que le genou
-              arrière approche du sol, formant un angle de 90° avec le genou
-              avant. Le torse reste droit et le genou avant ne dépasse pas les
-              orteils. Poussez sur le talon avant pour revenir à la position
-              initiale, puis alternez avec l'autre jambe. Cet exercice améliore
-              également l'équilibre et peut être intensifié avec des haltères ou
-              des fentes sautées. 4o
+              {description}
             </span>
             <div className="flex-grow flex-1 min-w-0 aspect-[853/480] relative h-min">
-            <AnimatePresence>
-              {isLoading && (
-                <motion.div
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="w-full h-full absolute bg-gray-custom z-10"
-                >
-                  <div className="absolute w-full h-full flex items-center justify-center">
-                    <Spinner></Spinner>
-                  </div>
-                </motion.div>
-                
-              )}
+              <AnimatePresence>
+                {isLoading && (
+                  <motion.div
+                    initial={{ opacity: 1 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="w-full h-full absolute bg-gray-custom z-10"
+                  >
+                    <div className="absolute w-full h-full flex items-center justify-center">
+                      <Spinner></Spinner>
+                    </div>
+                  </motion.div>
+                )}
               </AnimatePresence>
               <iframe
                 data-loading={isLoading}
                 width="853"
                 height="480"
-                src={"https://www.youtube.com/embed/xxLjUeVPYYk"}
-                frameBorder="0"
+                src={`https://www.youtube.com/embed/${video_id}`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 title="Embedded youtube"
