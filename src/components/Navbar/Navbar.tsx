@@ -6,6 +6,8 @@ import LogOutIcon from "../icons/LogOutIcon.tsx";
 import { useState } from "react";
 import MobileNav from "./MobileNav.tsx";
 import XMark from "../icons/XMark.tsx";
+import CalendarIcon from "../icons/CalendarIcon.tsx";
+
 
 export default function Navbar() {
   const [activeTab, setActiveTab] = useState<string>("home");
@@ -49,6 +51,16 @@ export default function Navbar() {
             >
               <UserIcon></UserIcon>
               <span className="whitespace-nowrap overflow-hidden">Profil</span>
+            </Navitem>
+            <Navitem
+              currentPage={activeTab}
+              setActiveTab={setActiveTab}
+              setIsCollapsed={setIsCollapsed}
+              page="program"
+              route="/program"
+            >
+                <CalendarIcon></CalendarIcon>
+              <span className="whitespace-nowrap overflow-hidden">Création de programme</span>
             </Navitem>
             <Navitem
               currentPage={activeTab}
