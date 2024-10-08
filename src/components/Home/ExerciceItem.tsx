@@ -17,7 +17,7 @@ export default function ExerciceItem() {
       return;
     }
     setIsCollapsed(!isCollapsed);
-    setIsLoading(true)
+    setIsLoading(true);
   };
 
   return (
@@ -31,7 +31,7 @@ export default function ExerciceItem() {
       >
         <input
           type="checkbox"
-          className="h-6 w-6 rounded-md appearance-none checked:bg-green-custom border-gray-custom border-2 cursor-pointer"
+          className="h-6 w-6 rounded-md appearance-none checked:bg-green-custom border-gray-custom border-2 cursor-pointer transition-all"
         />
         <span className="mr-auto">Fentes marchées</span>
         <Badge>3 séries</Badge>
@@ -46,14 +46,14 @@ export default function ExerciceItem() {
       <AnimatePresence>
         {isCollapsed && (
           <motion.div
-            layout // Framer Motion gère la taille dynamique avec layout
+            layout
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="w-full overflow-hidden flex gap-4 justify-evenly px-4"
+            className="w-full overflow-hidden flex gap-6 justify-evenly px-4"
           >
-            <span className="max-w-96 flex-1 min-w-0">
+            <span className="max-w-96 flex-1 min-w-0 text-justify">
               En position debout, faites un grand pas en avant avec une jambe,
               puis descendez en pliant les deux genoux jusqu'à ce que le genou
               arrière approche du sol, formant un angle de 90° avec le genou
@@ -63,8 +63,23 @@ export default function ExerciceItem() {
               également l'équilibre et peut être intensifié avec des haltères ou
               des fentes sautées. 4o
             </span>
-            <div className="flex-grow flex-1 min-w-0 aspect-[853/480] relative">
-              {isLoading ? <><div className="absolute w-full h-full bg-gray-custom"></div><div className="absolute w-full h-full flex items-center justify-center"><Spinner></Spinner></div></> : <></>}
+            <div className="flex-grow flex-1 min-w-0 aspect-[853/480] relative h-min">
+            <AnimatePresence>
+              {isLoading && (
+                <motion.div
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="w-full h-full absolute bg-gray-custom z-10"
+                >
+                  <div className="absolute w-full h-full flex items-center justify-center">
+                    <Spinner></Spinner>
+                  </div>
+                </motion.div>
+                
+              )}
+              </AnimatePresence>
               <iframe
                 data-loading={isLoading}
                 width="853"
@@ -74,8 +89,8 @@ export default function ExerciceItem() {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 title="Embedded youtube"
-                className="w-full h-full opacity-0 data-[loading=false]:opacity-100 transition-all duration-500"
-                onLoad={()=>setIsLoading(false)}
+                className="w-full h-full opacity-0 data-[loading=false]:opacity-100 transition-all"
+                onLoad={() => setIsLoading(false)}
               />
             </div>
           </motion.div>
