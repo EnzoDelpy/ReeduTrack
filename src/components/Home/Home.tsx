@@ -4,7 +4,7 @@ import ExerciceItem from "./ExerciceItem";
 import TitleItem from "./TitleItem";
 import React, { useState } from "react";
 import ComboBox from "../shared/ComboBox.tsx";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import AddExercisePopup from "./AddExercisePopUp.tsx";
 
 interface ComboBoxItem {
@@ -90,9 +90,21 @@ export default function Home() {
             role == "KINE" ? "flex-col items-start gap-4" : "items-center"
           }`}
         >
-          <h1 className="font-semibold text-[2rem]">Bonjour, Enzo!</h1>
+          <motion.h1
+            initial={{ opacity: 0, translateY: -10 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ duration: 0.5 }}
+            className="font-semibold text-[2rem]"
+          >
+            Bonjour, Enzo!
+          </motion.h1>
           {role == "KINE" ? (
-            <div className="flex items-center justify-between w-full">
+            <motion.div
+              initial={{ opacity: 0, translateY: -10 }}
+              animate={{ opacity: 1, translateY: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex items-center justify-between w-full z-10"
+            >
               <ComboBox items={usersList} setSelectedItem={setSelectedUser}>
                 patient
               </ComboBox>
@@ -100,21 +112,27 @@ export default function Home() {
                 selectedDate={selectedDate}
                 onDateChange={handleDateChange}
               />
-            </div>
+            </motion.div>
           ) : (
-            <DatePicker
-              selectedDate={selectedDate}
-              onDateChange={handleDateChange}
-            />
+            <motion.div
+              initial={{ opacity: 0, translateY: -10 }}
+              animate={{ opacity: 1, translateY: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="z-10"
+            >
+              <DatePicker
+                selectedDate={selectedDate}
+                onDateChange={handleDateChange}
+              />
+            </motion.div>
           )}
         </div>
         {((role == "KINE" && selectedUser != null) || role == "USER") && (
-          <motion.div
-            initial={{ opacity: 0, translateY: -10 }}
+         <motion.div
+            initial={{ opacity: 0, translateY: -10}}
             animate={{ opacity: 1, translateY: 0 }}
-            exit={{ opacity: 0, translateY: -10 }}
-            transition={{ duration: 0.2 }}
-            className="flex flex-col gap-4"
+            transition={{ duration: 0.5, delay: ( role=="KINE" ? 0 : 0.3) }}
+            className="flex flex-col gap-4" 
           >
             {sortedItemsData.map((item, index) => {
               const shouldShowFirstNotOptional =
@@ -165,7 +183,7 @@ export default function Home() {
           </motion.div>
         )}
       </div>
-      {(role == "KINE" && selectedUser != null) && (
+      {role == "KINE" && selectedUser != null && (
         <AddExercisePopup
           isOpen={isPopupOpen}
           onClose={() => setIsPopupOpen(false)}

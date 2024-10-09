@@ -90,7 +90,7 @@ const AddExercisePopup: React.FC<AddExercisePopupProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center lg:pl-[23.25rem]"
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center lg:pl-[23.25rem] z-20"
         >
           <motion.div
             initial={{ scale: 0.9 }}

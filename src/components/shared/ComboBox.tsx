@@ -93,7 +93,7 @@ const Combobox = ({ items, children, setSelectedItem, border }: { items: ComboBo
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.1 }}
-            className={`absolute z-10 w-full bg-white rounded-lg p-2 top-[calc(100%_+_0.375rem)] ${border  ? border : ""}`}
+            className={`absolute z-20 w-full bg-white rounded-lg p-2 top-[calc(100%_+_0.375rem)] ${border  ? border : ""}`}
           >
             {/* Champ de recherche dans la popup */}
             <input

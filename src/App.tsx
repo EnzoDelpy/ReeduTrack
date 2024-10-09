@@ -9,7 +9,7 @@ import Login from "./components/Login/Login.tsx";
 
 function App() {
 
-  const isLogged : boolean = false;
+  const isLogged : boolean = true;
 
   return (
     <>
