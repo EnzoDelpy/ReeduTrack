@@ -13,6 +13,7 @@ export default {
         'blue-custom': '#588AA9',
         'gray-custom': '#D2D2D2',
         'red-custom': '#A95858',
+        'placeholder-color': '#a9a9a9',
       }
     },
     fontFamily: {

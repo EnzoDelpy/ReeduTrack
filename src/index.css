@@ -86,4 +86,21 @@
   font-style: italic;
 }
 
+/* styles.css */
+.scrollbar-thin {
+  scrollbar-width: thin; /* Pour Firefox */
+}
 
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px; /* Largeur de la scrollbar */
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #A0AEC0; /* Couleur de la barre de défilement */
+  border-radius: 4px; /* Arrondi de la barre de défilement */
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #E2E8F0; /* Couleur de l'arrière-plan de la scrollbar */
+  border-radius: 4px; /* Arrondi du fond de la scrollbar */
+}
