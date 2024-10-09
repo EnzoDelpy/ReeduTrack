@@ -6,18 +6,8 @@ import React, { useState } from "react";
 import ComboBox from "../shared/ComboBox.tsx";
 import { motion } from "framer-motion";
 import AddExercisePopup from "./AddExercisePopUp.tsx";
+import { ComboBoxItem, ExerciseFormData } from "../../types/types.ts";
 
-interface ComboBoxItem {
-  id: string;
-  text: string;
-}
-
-interface ExerciseFormData {
-  exercise: ComboBoxItem | null;
-  isOptional: boolean;
-  seriesCount: number;
-  repsCount: number;
-}
 
 export default function Home() {
   const [activeItem, setActiveItem] = useState<number | null>(null);

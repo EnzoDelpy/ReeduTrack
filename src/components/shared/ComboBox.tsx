@@ -1,11 +1,7 @@
 import { useState, useRef, useEffect, ReactNode } from "react";
 import ChevronUp from "../icons/ChevronUp";
 import { motion, AnimatePresence } from "framer-motion";
-
-interface ComboBoxItem {
-  id: string;
-  text: string;
-}
+import { ComboBoxItem } from "../../types/types";
 
 const Combobox = ({ items, children, setSelectedItem, border }: { items: ComboBoxItem[], children: ReactNode, setSelectedItem: (item: ComboBoxItem | null)=> void, border?:string}) => {
   const [textValue, setTextValue] = useState(""); // Texte affiché dans l'input

@@ -2,18 +2,7 @@ import React, { useState, useEffect } from "react";
 import Combobox from "../shared/ComboBox";
 import { motion, AnimatePresence } from "framer-motion";
 import XMark from "../icons/XMark";
-
-interface ComboBoxItem {
-  id: string;
-  text: string;
-}
-
-interface ExerciseFormData {
-  exercise: ComboBoxItem | null;
-  isOptional: boolean;
-  seriesCount: number;
-  repsCount: number;
-}
+import { ComboBoxItem, ExerciseFormData } from "../../types/types";
 
 interface AddExercisePopupProps {
   isOpen: boolean;
