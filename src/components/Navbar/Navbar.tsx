@@ -8,8 +8,7 @@ import MobileNav from "./MobileNav.tsx";
 import XMark from "../icons/XMark.tsx";
 import CalendarIcon from "../icons/CalendarIcon.tsx";
 
-
-export default function Navbar() {
+export default function Navbar({handleLogout}:{handleLogout:()=>void}) {
   const [activeTab, setActiveTab] = useState<string>("home");
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
@@ -59,21 +58,21 @@ export default function Navbar() {
               page="program"
               route="/program"
             >
-                <CalendarIcon></CalendarIcon>
-              <span className="whitespace-nowrap overflow-hidden">Création de programme</span>
-            </Navitem>
-            <Navitem
-              currentPage={activeTab}
-              setActiveTab={setActiveTab}
-              setIsCollapsed={setIsCollapsed}
-              page="logout"
-              route="/logout"
-            >
-              <LogOutIcon></LogOutIcon>
+              <CalendarIcon></CalendarIcon>
               <span className="whitespace-nowrap overflow-hidden">
-                Se déconnecter
+                Création de programme
               </span>
             </Navitem>
+            <li
+              className="flex items-center rounded-lg w-full h-12 gap-3 px-4 hover:bg-bg-color transition-all cursor-pointer "
+              onClick={() => {
+                handleLogout();
+                setIsCollapsed(false);
+              }}
+            >
+              <LogOutIcon></LogOutIcon>
+              Se déconnecter
+            </li>
           </ul>
         </nav>
       </div>

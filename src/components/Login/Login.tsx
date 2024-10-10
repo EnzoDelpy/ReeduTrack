@@ -1,35 +1,17 @@
 import { useState } from "react";
 import logo from "./../../assets/images/logo.png";
+import { useAuth } from "../../hooks/useAuth";
 
-export default function Login() {
+export default function Login({setIsAuthenticated}: {setIsAuthenticated:(isAuthenticated:boolean)=>void}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const { handleLogin, loading, error } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-
-    try {
-      const response = await fetch("BACK_ANHAS/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("token", data.token);
-        window.location.href = "/"; 
-      } else {
-        setError("Adresse e-mail ou mot de passe incorrect");
-      }
-    } catch (err) {
-      setError("Une erreur est survenue lors de la connexion.");
-    }
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();  // Empêche le rechargement de la page
+    await handleLogin(email, password, setIsAuthenticated);  // Appelle la fonction handleLogin
   };
+
 
   return (
     <div className="-translate-x-40 flex items-center justify-center bg-gray-100">
@@ -42,7 +24,7 @@ export default function Login() {
         
         {error && <p className="text-red-500 text-center">{error}</p>}
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">Adresse e-mail</label>
             <input
@@ -70,7 +52,8 @@ export default function Login() {
               type="submit"
               className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              Se connecter
+              {loading ? 'Logging in...' : 'Se connecter'}
+
             </button>
           </div>
         </form>
