@@ -6,9 +6,10 @@ import React, { useEffect, useState } from "react";
 import ComboBox from "../shared/ComboBox.tsx";
 import { motion } from "framer-motion";
 import AddExercisePopup from "./AddExercisePopUp.tsx";
-import { ComboBoxItem, ExerciseFormData, Item } from "../../types/types.ts";
+import { ComboBoxItem, ExerciseFormData} from "../../types/types.ts";
 import { getUsers } from "../../api/userApi.ts";
-import { User } from "../../types/api.ts";
+import { ExericeByUser, User } from "../../types/api.ts";
+import { getUserExercice } from "../../api/userExerciceAPI.ts";
 
 export default function Home() {
   const [activeItem, setActiveItem] = useState<number | null>(null);
@@ -16,6 +17,7 @@ export default function Home() {
   const [selectedUser, setSelectedUser] = useState<ComboBoxItem | null>(null); // Utilisateur sélectionné
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [usersList, setUsersList] = useState<ComboBoxItem[]>([]);
+  const [exercisesList, setExercisesList] = useState<ExericeByUser[]>([]);
   const role = localStorage.getItem("userRole");
   const firstName = localStorage.getItem("userFirstName");
   const userId = localStorage.getItem("userId");
@@ -48,34 +50,37 @@ export default function Home() {
     fetchPatients();
   }, [role, userId]);
 
-  const itemsData: Item[] = [
-    {
-      title: "Fentes marchées",
-      video_id: "kzDXFiKqwy8",
-      description:
-        "En position debout, faites un grand pas en avant avec une jambe, puis descendez en pliant les deux genoux jusqu'à ce que le genou arrière approche du sol, formant un angle de 90° avec le genou avant. Le torse reste droit et le genou avant ne dépasse pas les orteils. Poussez sur le talon avant pour revenir à la position initiale, puis alternez avec l'autre jambe. Cet exercice améliore également l'équilibre et peut être intensifié avec des haltères ou des fentes sautées. 4o",
-      optional: true,
-    },
-    {
-      title: "Fentes marchées",
-      video_id: "kzDXFiKqwy8",
-      description:
-        "En position debout, faites un grand pas en avant avec une jambe, puis descendez en pliant les deux genoux jusqu'à ce que le genou arrière approche du sol, formant un angle de 90° avec le genou avant. Le torse reste droit et le genou avant ne dépasse pas les orteils. Poussez sur le talon avant pour revenir à la position initiale, puis alternez avec l'autre jambe. Cet exercice améliore également l'équilibre et peut être intensifié avec des haltères ou des fentes sautées. 4o",
-      optional: false,
-    },
-    {
-      title: "Fentes marchées",
-      video_id: "kzDXFiKqwy8",
-      description:
-        "En position debout, faites un grand pas en avant avec une jambe, puis descendez en pliant les deux genoux jusqu'à ce que le genou arrière approche du sol, formant un angle de 90° avec le genou avant. Le torse reste droit et le genou avant ne dépasse pas les orteils. Poussez sur le talon avant pour revenir à la position initiale, puis alternez avec l'autre jambe. Cet exercice améliore également l'équilibre et peut être intensifié avec des haltères ou des fentes sautées. 4o",
-      optional: false,
-    },
-  ];
+  useEffect(() => {
+    const fetchExercises = async () => {
+      if (role === "USER" && selectedDate && userId) {
+        setExercisesList([])
+        try {
+          const date = formatDate(selectedDate)
+          const exercises = await getUserExercice({ exercise_date: date }, Number(userId));
+          console.log(userId);
+          console.log(exercises);
+          const sortedExercises = exercises.sort(
+            (a: ExericeByUser, b: ExericeByUser) => Number(a.optional) - Number(b.optional)
+          );
+          setExercisesList(sortedExercises)
+          //const newUsersList = patients.map((patient: User) => {return {id: patient.id, text: `${patient.Prenom} ${patient.Nom}`}});
+          //setUsersList(newUsersList)
+        } catch (error) {
+          console.error('Erreur lors de la récupération des patients :', error);
+        }
+      }
+    };
 
+    fetchExercises();
+  }, [selectedDate, selectedUser]);
 
-  const sortedItemsData = itemsData.sort(
-    (a, b) => Number(a.optional) - Number(b.optional)
-  );
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0, donc on ajoute 1
+    const day = String(date.getDate()).padStart(2, '0'); // On formate le jour avec deux chiffres
+  
+    return `${year}-${month}-${day}`;
+  };
 
   let firstNotOptional = false;
   let firstOptional = false;
@@ -132,14 +137,14 @@ export default function Home() {
             transition={{ duration: 0.5, delay: role == "KINE" ? 0 : 0.3 }}
             className="flex flex-col gap-4"
           >
-            {sortedItemsData.map((item, index) => {
+            {exercisesList.map((exercise, index) => {
               const shouldShowFirstNotOptional =
-                !firstNotOptional && !item.optional;
-              const shouldShowFirstOptional = !firstOptional && item.optional;
+                !firstNotOptional && !exercise.optional;
+              const shouldShowFirstOptional = !firstOptional && exercise.optional;
 
-              if (!firstNotOptional && !item.optional) {
+              if (!firstNotOptional && !exercise.optional) {
                 firstNotOptional = true;
-              } else if (!firstOptional && item.optional) {
+              } else if (!firstOptional && exercise.optional) {
                 firstOptional = true;
               }
 
@@ -153,9 +158,9 @@ export default function Home() {
                   )}
 
                   <ExerciceItem
-                    title={item.title}
-                    description={item.description}
-                    video_id={item.video_id}
+                    title={exercise.Nom_exo}
+                    description={exercise.description}
+                    video_id={exercise.video_id}
                     id={index}
                     activeItem={activeItem}
                     setActiveItem={setActiveItem}
@@ -163,7 +168,7 @@ export default function Home() {
                 </React.Fragment>
               );
             })}
-            {sortedItemsData.length == 0 && (
+            {exercisesList.length == 0 && (
               <TitleItem color="bg-red-custom">
                 {role == "USER"
                   ? "Vous n'avez pas d'exercice pour ce jour"
