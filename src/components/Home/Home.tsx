@@ -6,10 +6,13 @@ import React, { useEffect, useState } from "react";
 import ComboBox from "../shared/ComboBox.tsx";
 import { motion } from "framer-motion";
 import AddExercisePopup from "./AddExercisePopUp.tsx";
-import { ComboBoxItem, ExerciseFormData} from "../../types/types.ts";
+import { ComboBoxItem, ExerciseFormData } from "../../types/types.ts";
 import { getUsers } from "../../api/userApi.ts";
 import { ExericeByUser, User } from "../../types/api.ts";
-import { getUserExercice } from "../../api/userExerciceAPI.ts";
+import {
+  createUserExercise,
+  getUserExercice,
+} from "../../api/userExerciceAPI.ts";
 
 export default function Home() {
   const [activeItem, setActiveItem] = useState<number | null>(null);
@@ -18,14 +21,56 @@ export default function Home() {
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [usersList, setUsersList] = useState<ComboBoxItem[]>([]);
   const [exercisesList, setExercisesList] = useState<ExericeByUser[]>([]);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const role = localStorage.getItem("userRole");
   const firstName = localStorage.getItem("userFirstName");
   const userId = localStorage.getItem("userId");
 
-  const handleAddExercise = (exerciseData: ExerciseFormData) => {
+  const handleAddExercise = async (exerciseData: ExerciseFormData) => {
     console.log("Exercice ajouté :", exerciseData);
-    // Logique pour ajouter l'exercice à la liste
+    console.log(exerciseData);
+
+    let user_id;
+
+    if (role === "KINE" && selectedUser) {
+      user_id = selectedUser.id;
+    } else if (role === "USER") {
+      user_id = userId;
+    } else {
+      //erreur
+      return;
+    }
+
+    if (exerciseData.exercise && user_id) {
+      const date = formatDate(selectedDate);
+
+      const newUserExercice = {
+        user_id: Number(user_id),
+        exercice_id: Number(exerciseData.exercise.id),
+        date: date,
+        Optional: exerciseData.isOptional,
+        Checked: false,
+        series: exerciseData.sets,
+        repetitions: exerciseData.reps,
+      };
+      try {
+        const response = await createUserExercise(newUserExercice);
+        setIsSubmitted(true);
+        console.log("UserExercice créé avec succès:", response);
+      } catch (error) {
+        console.error("Erreur lors de la création du UserExercice:", error);
+      }
+    }
   };
+
+  React.useEffect(() => {
+    if (isSubmitted) {
+      const timer = setTimeout(() => {
+        setIsSubmitted(false);
+      }, 2000);
+      return () => clearTimeout(timer); // Cleanup the timer
+    }
+  }, [isSubmitted]);
 
   const handleDateChange = (newDate: Date) => {
     setSelectedDate(newDate);
@@ -34,15 +79,15 @@ export default function Home() {
   useEffect(() => {
     const fetchPatients = async () => {
       if (role === "KINE" && userId) {
-        setUsersList([])
+        setUsersList([]);
         try {
           const patients = await getUsers({ id_kine: userId });
-          console.log(userId);
-          console.log(patients);
-          const newUsersList = patients.map((patient: User) => {return {id: patient.id, text: `${patient.Prenom} ${patient.Nom}`}});
-          setUsersList(newUsersList)
+          const newUsersList = patients.map((patient: User) => {
+            return { id: patient.id, text: `${patient.Prenom} ${patient.Nom}` };
+          });
+          setUsersList(newUsersList);
         } catch (error) {
-          console.error('Erreur lors de la récupération des patients :', error);
+          console.error("Erreur lors de la récupération des patients :", error);
         }
       }
     };
@@ -53,32 +98,62 @@ export default function Home() {
   useEffect(() => {
     const fetchExercises = async () => {
       if (role === "USER" && selectedDate && userId) {
-        setExercisesList([])
+        setExercisesList([]);
         try {
-          const date = formatDate(selectedDate)
-          const exercises = await getUserExercice({ exercise_date: date }, Number(userId));
-          console.log(userId);
-          console.log(exercises);
-          const sortedExercises = exercises.sort(
-            (a: ExericeByUser, b: ExericeByUser) => Number(a.optional) - Number(b.optional)
+          const date = formatDate(selectedDate);
+          const exercises = await getUserExercice(
+            { exercise_date: date },
+            Number(userId)
           );
-          setExercisesList(sortedExercises)
+          const sortedExercises = exercises.sort(
+            (a: ExericeByUser, b: ExericeByUser) =>
+              Number(a.optional) - Number(b.optional)
+          );
+          setExercisesList(sortedExercises);
           //const newUsersList = patients.map((patient: User) => {return {id: patient.id, text: `${patient.Prenom} ${patient.Nom}`}});
           //setUsersList(newUsersList)
         } catch (error) {
-          console.error('Erreur lors de la récupération des patients :', error);
+          console.error(
+            "Erreur lors de la récupération des exercices :",
+            error
+          );
+        }
+      }
+
+      if (role === "KINE" && selectedDate && selectedUser) {
+        if (selectedUser.id) {
+          setExercisesList([]);
+          try {
+            const date = formatDate(selectedDate);
+            const exercises = await getUserExercice(
+              { exercise_date: date },
+              Number(selectedUser.id)
+            );
+            const sortedExercises = exercises.sort(
+              (a: ExericeByUser, b: ExericeByUser) =>
+                Number(a.optional) - Number(b.optional)
+            );
+            setExercisesList(sortedExercises);
+            //const newUsersList = patients.map((patient: User) => {return {id: patient.id, text: `${patient.Prenom} ${patient.Nom}`}});
+            //setUsersList(newUsersList)
+          } catch (error) {
+            console.error(
+              "Erreur lors de la récupération des exercices :",
+              error
+            );
+          }
         }
       }
     };
 
     fetchExercises();
-  }, [selectedDate, selectedUser]);
+  }, [selectedDate, selectedUser, isSubmitted]);
 
   const formatDate = (date: Date) => {
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0, donc on ajoute 1
-    const day = String(date.getDate()).padStart(2, '0'); // On formate le jour avec deux chiffres
-  
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Les mois commencent à 0, donc on ajoute 1
+    const day = String(date.getDate()).padStart(2, "0"); // On formate le jour avec deux chiffres
+
     return `${year}-${month}-${day}`;
   };
 
@@ -140,7 +215,8 @@ export default function Home() {
             {exercisesList.map((exercise, index) => {
               const shouldShowFirstNotOptional =
                 !firstNotOptional && !exercise.optional;
-              const shouldShowFirstOptional = !firstOptional && exercise.optional;
+              const shouldShowFirstOptional =
+                !firstOptional && exercise.optional;
 
               if (!firstNotOptional && !exercise.optional) {
                 firstNotOptional = true;
@@ -164,6 +240,8 @@ export default function Home() {
                     id={index}
                     activeItem={activeItem}
                     setActiveItem={setActiveItem}
+                    sets={exercise.series}
+                    reps={exercise.repetitions}
                   ></ExerciceItem>
                 </React.Fragment>
               );

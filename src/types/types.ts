@@ -6,8 +6,8 @@ export interface ComboBoxItem {
 export interface ExerciseFormData {
   exercise: ComboBoxItem | null;
   isOptional: boolean;
-  seriesCount: number;
-  repsCount: number;
+  sets: number;
+  reps: number;
 }
 
 export type Item = {

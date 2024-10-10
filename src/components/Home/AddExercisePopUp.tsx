@@ -3,6 +3,8 @@ import Combobox from "../shared/ComboBox";
 import { motion, AnimatePresence } from "framer-motion";
 import XMark from "../icons/XMark";
 import { ComboBoxItem, ExerciseFormData } from "../../types/types";
+import { getExercices } from "../../api/exercicesAPI";
+import { Exercise } from "../../types/api";
 
 interface AddExercisePopupProps {
   isOpen: boolean;
@@ -10,23 +12,6 @@ interface AddExercisePopupProps {
   onSubmit: (data: ExerciseFormData) => void;
 }
 
-const rehabExercises: ComboBoxItem[] = [
-  { id: "1", text: "Renforcement quadriceps" },
-  { id: "2", text: "Étirements ischio-jambiers" },
-  { id: "3", text: "Mobilisation de l'épaule" },
-  { id: "4", text: "Flexion-extension du genou" },
-  { id: "5", text: "Exercice de proprioception cheville" },
-  { id: "6", text: "Renforcement des abducteurs de hanche" },
-  { id: "7", text: "Étirements du triceps sural" },
-  { id: "8", text: "Travail de la mobilité lombaire" },
-  { id: "9", text: "Exercice de rotation du tronc" },
-  { id: "10", text: "Renforcement des muscles paravertébraux" },
-  { id: "11", text: "Exercice de stabilité du bassin" },
-  { id: "12", text: "Étirements de la coiffe des rotateurs" },
-  { id: "13", text: "Renforcement des muscles fessiers" },
-  { id: "14", text: "Mobilisation de la hanche" },
-  { id: "15", text: "Exercices d'équilibre debout" },
-];
 
 const AddExercisePopup: React.FC<AddExercisePopupProps> = ({
   isOpen,
@@ -40,6 +25,7 @@ const AddExercisePopup: React.FC<AddExercisePopupProps> = ({
   const [seriesCount, setSeriesCount] = useState<string>("");
   const [repsCount, setRepsCount] = useState<string>("");
   const [isValid, setIsValid] = useState<boolean>(false);
+  const [exercicesList, setExercicesList] = useState<ComboBoxItem[]>([]);
 
   // Fonction de validation des champs
   useEffect(() => {
@@ -49,6 +35,23 @@ const AddExercisePopup: React.FC<AddExercisePopupProps> = ({
       setIsValid(false);
     }
   }, [selectedExercise, seriesCount, repsCount]);
+
+  useEffect(() => {
+    const fetchExercices = async () => {
+        setExercicesList([]);
+        try {
+          const patients = await getExercices();
+          const newExercicesList = patients.map((exercice: Exercise) => {
+            return { id: exercice.id_exercice, text: exercice.Nom_exo };
+          });
+          setExercicesList(newExercicesList);
+        } catch (error) {
+          console.error("Erreur lors de la récupération des exercices :", error);
+      }
+    };
+
+    fetchExercices();
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -64,8 +67,8 @@ const AddExercisePopup: React.FC<AddExercisePopupProps> = ({
       onSubmit({
         exercise: selectedExercise,
         isOptional,
-        seriesCount: parseInt(seriesCount, 10),
-        repsCount: parseInt(repsCount, 10),
+        sets: parseInt(seriesCount, 10),
+        reps: parseInt(repsCount, 10),
       });
       onClose(); // Fermer la popup après validation
     }
@@ -97,7 +100,7 @@ const AddExercisePopup: React.FC<AddExercisePopupProps> = ({
 
             <div className="flex flex-col gap-4">
               <Combobox
-                items={rehabExercises}
+                items={exercicesList}
                 setSelectedItem={setSelectedExercise}
                 border="border border-gray-custom"
               >

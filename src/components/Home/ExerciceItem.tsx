@@ -11,6 +11,8 @@ interface Props {
   activeItem: number | null;
   id: number;
   setActiveItem: (itemId: number | null) => void;
+  sets: number,
+  reps:number
 }
 
 export default function ExerciceItem({
@@ -20,6 +22,9 @@ export default function ExerciceItem({
   activeItem,
   id,
   setActiveItem,
+  sets,
+  reps
+
 }: Props) {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -53,8 +58,8 @@ export default function ExerciceItem({
           className="h-6 w-6 rounded-md appearance-none checked:bg-green-custom border-gray-custom border-2 cursor-pointer transition-all"
         />
         <span className="mr-auto">{title}</span>
-        <Badge>3 séries</Badge>
-        <Badge>20 répétitions</Badge>
+        <Badge>{`${sets} séries`}</Badge>
+        <Badge>{`${reps} répétitions`}</Badge>
         <div
           data-collapsed={activeItem == id}
           className="ml-3 data-[collapsed=true]:rotate-180 transition-all duration-300"
