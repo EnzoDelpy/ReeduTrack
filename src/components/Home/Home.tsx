@@ -2,20 +2,23 @@ import DatePicker from "../shared/DatePicker";
 
 import ExerciceItem from "./ExerciceItem";
 import TitleItem from "./TitleItem";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ComboBox from "../shared/ComboBox.tsx";
 import { motion } from "framer-motion";
 import AddExercisePopup from "./AddExercisePopUp.tsx";
-import { ComboBoxItem, ExerciseFormData } from "../../types/types.ts";
-
+import { ComboBoxItem, ExerciseFormData, Item } from "../../types/types.ts";
+import { getUsers } from "../../api/userApi.ts";
+import { User } from "../../types/api.ts";
 
 export default function Home() {
   const [activeItem, setActiveItem] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedUser, setSelectedUser] = useState<ComboBoxItem | null>(null); // Utilisateur sélectionné
-  //const role = localStorage.getItem('role');
-  const role: string = "KINE";
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+  const [usersList, setUsersList] = useState<ComboBoxItem[]>([]);
+  const role = localStorage.getItem("userRole");
+  const firstName = localStorage.getItem("userFirstName");
+  const userId = localStorage.getItem("userId");
 
   const handleAddExercise = (exerciseData: ExerciseFormData) => {
     console.log("Exercice ajouté :", exerciseData);
@@ -26,12 +29,24 @@ export default function Home() {
     setSelectedDate(newDate);
   };
 
-  type Item = {
-    title: string;
-    video_id: string;
-    description: string;
-    optional: boolean;
-  };
+  useEffect(() => {
+    const fetchPatients = async () => {
+      if (role === "KINE" && userId) {
+        setUsersList([])
+        try {
+          const patients = await getUsers({ id_kine: userId });
+          console.log(userId);
+          console.log(patients);
+          const newUsersList = patients.map((patient: User) => {return {id: patient.id, text: `${patient.Prenom} ${patient.Nom}`}});
+          setUsersList(newUsersList)
+        } catch (error) {
+          console.error('Erreur lors de la récupération des patients :', error);
+        }
+      }
+    };
+
+    fetchPatients();
+  }, [role, userId]);
 
   const itemsData: Item[] = [
     {
@@ -57,13 +72,6 @@ export default function Home() {
     },
   ];
 
-  const usersList = [
-    { id: "1", text: "Enzo Dupont" },
-    { id: "2", text: "Marie Martin" },
-    { id: "3", text: "Paul Durand" },
-    { id: "4", text: "Sophie Leroy" },
-    { id: "5", text: "Lucas Moreau" },
-  ];
 
   const sortedItemsData = itemsData.sort(
     (a, b) => Number(a.optional) - Number(b.optional)
@@ -86,7 +94,7 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             className="font-semibold text-[2rem]"
           >
-            Bonjour, Enzo!
+            {`Bonjour, ${firstName}!`}
           </motion.h1>
           {role == "KINE" ? (
             <motion.div
@@ -118,11 +126,11 @@ export default function Home() {
           )}
         </div>
         {((role == "KINE" && selectedUser != null) || role == "USER") && (
-         <motion.div
-            initial={{ opacity: 0, translateY: -10}}
+          <motion.div
+            initial={{ opacity: 0, translateY: -10 }}
             animate={{ opacity: 1, translateY: 0 }}
-            transition={{ duration: 0.5, delay: ( role=="KINE" ? 0 : 0.3) }}
-            className="flex flex-col gap-4" 
+            transition={{ duration: 0.5, delay: role == "KINE" ? 0 : 0.3 }}
+            className="flex flex-col gap-4"
           >
             {sortedItemsData.map((item, index) => {
               const shouldShowFirstNotOptional =

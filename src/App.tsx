@@ -34,8 +34,10 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem("userId");
-    localStorage.removeItem("role");
+    localStorage.removeItem("userRole");
     localStorage.removeItem("isAuthenticated"); // Supprimer l'état d'authentification
+    localStorage.removeItem('userFirstName');
+    localStorage.removeItem('userName');
     setIsAuthenticated(false); // Mettre à jour l'état d'authentification
   };
 

@@ -12,9 +12,10 @@ export const useAuth = () => {
     try {
       const data = await login(email, password);
       localStorage.setItem('userId', data.user_id);
-      localStorage.setItem('role', data.role);
+      localStorage.setItem('userRole', data.role);
+      localStorage.setItem('userFirstName', data.prenom);
+      localStorage.setItem('userName', data.nom);
       localStorage.setItem('isAuthenticated', 'true');
-      console.log(true)
       setIsAuthenticated(true)
       navigate("/")
       // Enregistrer le token, rediriger l'utilisateur, etc.
