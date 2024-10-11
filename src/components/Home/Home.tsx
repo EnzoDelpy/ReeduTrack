@@ -44,6 +44,8 @@ export default function Home() {
     if (exerciseData.exercise && user_id) {
       const date = formatDate(selectedDate);
 
+      console.log("series " + exerciseData.sets);
+
       const newUserExercice = {
         user_id: Number(user_id),
         exercice_id: Number(exerciseData.exercise.id),
@@ -98,7 +100,6 @@ export default function Home() {
   useEffect(() => {
     const fetchExercises = async () => {
       if (role === "USER" && selectedDate && userId) {
-        setExercisesList([]);
         try {
           const date = formatDate(selectedDate);
           const exercises = await getUserExercice(
@@ -113,6 +114,7 @@ export default function Home() {
           //const newUsersList = patients.map((patient: User) => {return {id: patient.id, text: `${patient.Prenom} ${patient.Nom}`}});
           //setUsersList(newUsersList)
         } catch (error) {
+          setExercisesList([]);
           console.error(
             "Erreur lors de la récupération des exercices :",
             error
@@ -122,7 +124,6 @@ export default function Home() {
 
       if (role === "KINE" && selectedDate && selectedUser) {
         if (selectedUser.id) {
-          setExercisesList([]);
           try {
             const date = formatDate(selectedDate);
             const exercises = await getUserExercice(
@@ -137,6 +138,7 @@ export default function Home() {
             //const newUsersList = patients.map((patient: User) => {return {id: patient.id, text: `${patient.Prenom} ${patient.Nom}`}});
             //setUsersList(newUsersList)
           } catch (error) {
+            setExercisesList([]);
             console.error(
               "Erreur lors de la récupération des exercices :",
               error
@@ -217,6 +219,8 @@ export default function Home() {
                 !firstNotOptional && !exercise.optional;
               const shouldShowFirstOptional =
                 !firstOptional && exercise.optional;
+
+              console.log(exercise);
 
               if (!firstNotOptional && !exercise.optional) {
                 firstNotOptional = true;
