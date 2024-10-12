@@ -229,7 +229,7 @@ export default function Home() {
               }
 
               return (
-                <React.Fragment key={index}>
+                <React.Fragment key={`${selectedDate}${index}`}>
                   {shouldShowFirstNotOptional && (
                     <TitleItem color="bg-green-custom">À faire</TitleItem>
                   )}
