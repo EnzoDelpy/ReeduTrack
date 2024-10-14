@@ -22,7 +22,7 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés :
 Clonez le projet, puis installez les dépendances :
 
 ```bash
-git clone https://github.com/tonnomutilisateur/reedutrack.git
+git clone https://github.com/EnzoDelpy/ReeduTrack.git
 cd reedutrack
 npm install
 ```
