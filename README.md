@@ -1,50 +1,46 @@
-# React + TypeScript + Vite
+# ReeduTrack
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ReeduTrack est une application web conçue pour simplifier la planification d'exercices à domicile par les kinésithérapeutes pour leurs patients. Grâce à cette solution, les kinés peuvent facilement attribuer des exercices personnalisés et suivre la progression de leurs patients.
 
-Currently, two official plugins are available:
+## Fonctionnalités
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Gestion des patients** : Ajouter, modifier ou supprimer des patients.
+- **Attribution d'exercices** : Planifier des exercices de rééducation personnalisés à effectuer à domicile.
+- **Calendrier des exercices** : Visualisation d'un calendrier avec les exercices assignés pour chaque patient.
+- **Suivi de progression** : Suivi de l'avancement des patients dans leurs exercices.
+- **Interface intuitive** : Interface utilisateur simple et épurée, adaptée à une utilisation par des kinés.
 
-## Expanding the ESLint configuration
+## Prérequis
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Avant de commencer, assurez-vous d'avoir les éléments suivants installés :
 
-- Configure the top-level `parserOptions` property like this:
+- [Node.js](https://nodejs.org/) (version 14 ou supérieure)
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Installation
+
+Clonez le projet, puis installez les dépendances :
+
+```bash
+git clone https://github.com/tonnomutilisateur/reedutrack.git
+cd reedutrack
+npm install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Lancement du projet
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Pour démarrer le serveur de développement local :
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm run dev
 ```
+
+L'application sera disponible à l'adresse [http://localhost:5173](http://localhost:5173).
+
+## Technologies utilisées
+
+- **[React](https://reactjs.org/)** : Bibliothèque JavaScript pour la création d'interfaces utilisateur.
+- **[TypeScript](https://www.typescriptlang.org/)** : Superset de JavaScript qui ajoute du typage statique.
+- **[Vite](https://vitejs.dev/)** : Outil de build rapide pour les projets front-end.
+- **[Tailwind CSS](https://tailwindcss.com/)** : Framework CSS utilitaire pour la conception d'interfaces réactives.
+- **[Framer Motion](https://www.framer.com/motion/)** : Bibliothèque d'animations pour React.
